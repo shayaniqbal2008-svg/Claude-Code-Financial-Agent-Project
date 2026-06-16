@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Agent</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+  <div id="status-dot" class="status-dot stale"></div>
+  <h1>FINANCIAL AGENT</h1>
+  <div class="date-nav">
+    <select id="date-select"></select>
+  </div>
+  <span id="report-date" class="date-label"></span>
+</header>
+
+<div class="layout">
+  <div class="report-panel">
+    <div id="report-content">
+      <p class="empty-state" style="padding:24px 0">Loading report...</p>
+    </div>
+  </div>
+
+  <div class="portfolio-panel">
+    <div class="panel-title">Live Portfolio</div>
+    <table class="portfolio-table">
+      <thead><tr><th>Ticker</th><th>Grade</th><th>Price</th></tr></thead>
+      <tbody id="portfolio-rows">
+        <tr><td colspan="3" class="empty-state">Loading...</td></tr>
+      </tbody>
+    </table>
+
+    <div class="panel-title" style="margin-top:20px">Market</div>
+    <div class="index-grid">
+      <div class="index-card">
+        <div class="index-label">S&amp;P 500</div>
+        <div class="index-value" id="sp500">—</div>
+      </div>
+      <div class="index-card">
+        <div class="index-label">NASDAQ</div>
+        <div class="index-value" id="nasdaq">—</div>
+      </div>
+      <div class="index-card" style="grid-column:1/-1">
+        <div class="index-label">VIX</div>
+        <div class="index-value" id="vix">—</div>
+      </div>
+    </div>
+    <div class="refresh-label" id="last-refresh"></div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
