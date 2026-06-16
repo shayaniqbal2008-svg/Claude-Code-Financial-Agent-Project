@@ -8,8 +8,8 @@ from PIL import Image, ImageDraw
 import uvicorn
 
 BASE_DIR = Path(__file__).parent.parent
-DASHBOARD_URL = "http://localhost:3000"
 PORT = 3000
+DASHBOARD_URL = f"http://localhost:{PORT}"
 
 
 def create_icon_image() -> Image.Image:
@@ -25,9 +25,17 @@ def open_dashboard():
     webbrowser.open(DASHBOARD_URL)
 
 
+_agent_proc: subprocess.Popen | None = None
+
+
 def run_agent_now():
+    global _agent_proc
+    if _agent_proc is not None and _agent_proc.poll() is None:
+        return  # already running
     agent_script = BASE_DIR / "agent" / "main.py"
-    subprocess.Popen([sys.executable, str(agent_script)], cwd=str(BASE_DIR))
+    if not agent_script.exists():
+        return
+    _agent_proc = subprocess.Popen([sys.executable, str(agent_script)], cwd=str(BASE_DIR))
 
 
 def start_server():
@@ -44,8 +52,8 @@ def main():
     server_thread.start()
 
     menu = pystray.Menu(
-        pystray.MenuItem("Open Dashboard", lambda: open_dashboard()),
-        pystray.MenuItem("Run Agent Now", lambda: run_agent_now()),
+        pystray.MenuItem("Open Dashboard", open_dashboard),
+        pystray.MenuItem("Run Agent Now", run_agent_now),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem("Exit", lambda icon, item: icon.stop()),
     )
