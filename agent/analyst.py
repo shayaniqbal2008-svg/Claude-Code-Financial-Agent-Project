@@ -1,6 +1,9 @@
 import json
+import logging
 from anthropic import Anthropic
 from agent.screener import ScreenResult
+
+log = logging.getLogger(__name__)
 
 
 SYSTEM_PROMPT = (
@@ -93,7 +96,7 @@ def analyze(
 
     response = client.messages.create(
         model=model,
-        max_tokens=4096,
+        max_tokens=8192,
         system=SYSTEM_PROMPT,
         messages=[
             {
@@ -114,4 +117,12 @@ def analyze(
         extra_headers={"anthropic-beta": "prompt-caching-2024-07-31"},
     )
 
-    return json.loads(response.content[0].text)
+    raw = response.content[0].text.strip()
+    log.info(f"Claude response: stop_reason={response.stop_reason}, chars={len(raw)}")
+    # Strip markdown fences if Claude wrapped the JSON
+    if raw.startswith("```"):
+        raw = raw.split("```", 2)[1]
+        if raw.startswith("json"):
+            raw = raw[4:]
+        raw = raw.rsplit("```", 1)[0].strip()
+    return json.loads(raw)

@@ -2,7 +2,6 @@
 **Date:** 2026-06-15  
 **Author:** Shayan Iqbal (via Claude Code)  
 **Status:** Approved
-
 ---
 
 ## What We're Building

@@ -45,7 +45,8 @@
       "Bash(powershell *)",
       "Bash(git commit *)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\shaya_lukp8lb\\\\Desktop\\\\Claude Code\\\\Financial Agent\" -Directory)",
-      "Bash(Select-Object Name)"
+      "Bash(Select-Object Name)",
+      "PowerShell(& \"C:\\\\Users\\\\shaya_lukp8lb\\\\Desktop\\\\Claude Code\\\\Financial Agent\\\\scripts\\\\setup_startup.ps1\")"
     ],
     "defaultMode": "auto"
   }
