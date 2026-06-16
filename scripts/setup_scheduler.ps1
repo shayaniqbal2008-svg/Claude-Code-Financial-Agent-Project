@@ -5,7 +5,13 @@ param(
     [string]$ProjectDir = (Split-Path $PSScriptRoot -Parent)
 )
 
-$PythonPath = (Get-Command python).Source
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Error "This script must be run as Administrator. Right-click PowerShell and choose 'Run as Administrator'."; exit 1
+}
+
+$PythonCmd = Get-Command python -ErrorAction SilentlyContinue
+if (-not $PythonCmd) { Write-Error "python not found in PATH. Install Python and try again."; exit 1 }
+$PythonPath = $PythonCmd.Source
 $ScriptPath = Join-Path $ProjectDir "agent\main.py"
 
 # 8:00 AM local time (user's machine must be set to Central Time)

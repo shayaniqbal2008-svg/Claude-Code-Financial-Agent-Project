@@ -5,7 +5,11 @@ param(
     [string]$ProjectDir = (Split-Path $PSScriptRoot -Parent)
 )
 
-$PythonwPath = Join-Path (Split-Path (Get-Command python).Source -Parent) "pythonw.exe"
+$PythonCmd = Get-Command python -ErrorAction SilentlyContinue
+if (-not $PythonCmd) { Write-Error "python not found in PATH. Install Python and try again."; exit 1 }
+$PythonwPath = Join-Path (Split-Path $PythonCmd.Source -Parent) "pythonw.exe"
+if (-not (Test-Path $PythonwPath)) { Write-Error "pythonw.exe not found at $PythonwPath. Ensure Python was installed with the standard Windows installer."; exit 1 }
+
 $TrayScript = Join-Path $ProjectDir "dashboard\tray.py"
 $StartupFolder = [Environment]::GetFolderPath("Startup")
 $ShortcutPath = Join-Path $StartupFolder "FinancialAgent.lnk"

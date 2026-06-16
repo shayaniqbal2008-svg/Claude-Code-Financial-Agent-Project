@@ -11,7 +11,7 @@ Write-Host "=== Financial Agent Setup ===" -ForegroundColor Cyan
 
 # 1. Install Python dependencies
 Write-Host "`n[1/3] Installing Python dependencies..." -ForegroundColor Yellow
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 if ($LASTEXITCODE -ne 0) { Write-Error "pip install failed"; exit 1 }
 
 # 2. Register Task Scheduler
