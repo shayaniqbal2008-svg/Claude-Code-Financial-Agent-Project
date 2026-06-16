@@ -1,6 +1,10 @@
 async function loadReportDates() {
   try {
     const res = await fetch('/api/reports');
+    if (!res.ok) {
+      document.getElementById('report-content').innerHTML = '<p style="color:var(--red)">Failed to load reports.</p>';
+      return;
+    }
     const dates = await res.json();
     const sel = document.getElementById('date-select');
     sel.innerHTML = dates.map(d => `<option value="${d}">${d}</option>`).join('');
@@ -31,7 +35,7 @@ async function loadReport(date) {
 
 function updateStatusDot(report) {
   const dot = document.getElementById('status-dot');
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toLocaleDateString('en-CA');
   dot.className = 'status-dot ' + (report.date === today ? 'fresh' : 'stale');
 }
 
@@ -44,7 +48,7 @@ function esc(str) {
 }
 
 function badge(urgency) {
-  return `<span class="urgency-badge ${esc(urgency)}">${esc(urgency.toUpperCase())}</span>`;
+  return `<span class="urgency-badge ${esc(urgency.toLowerCase())}">${esc(urgency.toUpperCase())}</span>`;
 }
 
 function section(title, count, body, openByDefault = false) {
